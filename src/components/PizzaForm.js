@@ -1,19 +1,35 @@
 import React from "react";
 
-function PizzaForm() {
+function PizzaForm({pizzaToEdit, handleChangeForm, handleSubmit}) {
+  if (!pizzaToEdit) {
+    return null
+  }
+
+  const {topping, size, vegetarian} = pizzaToEdit
+  
+  function handleInputChange(e) {
+    handleChangeForm(e.target.name, e.target.value)
+  }
+
+  function handleRadioChange(e) {
+    handleChangeForm(e.target.name, e.target.value === "Vegetarian")
+  }
+
   return (
-    <form onSubmit={null /*handle that submit*/}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <div className="form-row">
         <div className="col-5">
           <input
             className="form-control"
             type="text"
             name="topping"
-            placeholder="Pizza Topping"
+            value={topping}
+            // placeholder="Pizza Topping"
+            onChange={handleInputChange}
           />
         </div>
         <div className="col">
-          <select className="form-control" name="size">
+          <select className="form-control" name="size" value={size} onChange={handleInputChange}>
             <option value="Small">Small</option>
             <option value="Medium">Medium</option>
             <option value="Large">Large</option>
@@ -25,7 +41,9 @@ function PizzaForm() {
               className="form-check-input"
               type="radio"
               name="vegetarian"
-              value="Vegetarian"
+              value ="Vegetarian"
+              checked={vegetarian}
+              onChange={handleRadioChange}
             />
             <label className="form-check-label">Vegetarian</label>
           </div>
@@ -35,6 +53,8 @@ function PizzaForm() {
               type="radio"
               name="vegetarian"
               value="Not Vegetarian"
+              checked={!vegetarian}
+              onChange={handleRadioChange}
             />
             <label className="form-check-label">Not Vegetarian</label>
           </div>
